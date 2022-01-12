@@ -37,7 +37,7 @@ const candidateSlice = createSlice({
         filterCandidates: (state, action?: PayloadAction<QueryTypes>) => {
             if (action?.payload) state.query = { ...state.query, ...action.payload }
             state.value = initialState.value.filter((item) => {
-                let { sortBy = "position_applied", ...filters } = state.query
+                let { sortBy, ...filters } = state.query
                 let filterName: keyof FiltersTypes
                 let hasMatch = true
 

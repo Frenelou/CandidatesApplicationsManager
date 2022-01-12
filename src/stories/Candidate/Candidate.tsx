@@ -1,7 +1,7 @@
 import React from "react";
 import { StyledCandidate } from "./styles";
 import { Candidate as CandidateInterface } from "../../common/interfaces";
-import { Icon } from "@chakra-ui/react";
+import { Icon, Link } from "@chakra-ui/react";
 
 interface CandidateProps {
   candidate: CandidateInterface;
@@ -17,7 +17,9 @@ export const Candidate = ({ candidate, ...props }: CandidateProps) => {
     <StyledCandidate
       className={["storybook-candidate", `storybook-candidate--`].join(" ")}>
       <p>{candidate.name}</p>
-      <p>{candidate.email}</p>
+      <Link href={`mailto:${candidate.email}`} isExternal>
+        {candidate.email}
+      </Link>
       <p>{candidate.year_of_experience}</p>
       <p>{candidate.position_applied}</p>
       <p>{candidate.application_date}</p>

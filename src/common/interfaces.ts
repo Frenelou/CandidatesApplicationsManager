@@ -1,5 +1,5 @@
-import { StatusTypes, SortingTypes } from '../common/types';
-export interface Candidate {
+import { StatusTypes, SortingTypes, CandidateTypes } from '../common/types';
+export interface Candidate extends CandidateTypes {
     id: number;
     application_date: string;
     birth_date: string;
