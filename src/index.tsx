@@ -4,11 +4,24 @@ import ReactDOM from "react-dom"
 import { App } from "./App"
 import reportWebVitals from "./reportWebVitals"
 import * as serviceWorker from "./serviceWorker"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Dashboard from "./routes/Dashboard";
+
+import { Provider } from "react-redux";
+import { ChakraProvider } from '@chakra-ui/react'
+import { store } from "./app/store";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ColorModeScript />
-    <App />
+    <BrowserRouter>
+      <Provider store={store}>
+        <ChakraProvider>
+          <Routes>
+            <Route path="/" element={<App />} />
+          </Routes>
+        </ChakraProvider>
+      </Provider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root"),
 )
