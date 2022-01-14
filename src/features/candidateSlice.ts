@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -9,15 +9,15 @@ import { sortBy, filterBy } from '../utils/methods';
 
 const initialState: CandidateState = {
     loading: true,
-    error: false,
     unfilteredCandidates: [],
     candidates: [],
 };
 
 export const fetchCandidates = createAsyncThunk("getCandidates", async (query: any, { rejectWithValue }) => {
-    let res = await axios.get("https://sumit-back-end-env.herokuapp.com/api/v1/candidates")
-    if (res.data.data.data === undefined) return rejectWithValue(true)
-    return ({ query: query, data: res.data.data.data });
+    let res: any = await axios.get("https://my.api.mockaroo.com/candidates.json?key=64075fa0")
+        .then((response) => ({ query: query, data: response.data }))
+        .catch((error) => rejectWithValue(error.message))
+    return res
 });
 
 const candidateSlice = createSlice({
@@ -46,9 +46,9 @@ const candidateSlice = createSlice({
             state.candidates = sortedData
             state.loading = false
         })
-        builder.addCase(fetchCandidates.rejected, (state) => {
+        builder.addCase(fetchCandidates.rejected, (state, action: PayloadAction<any>) => {
             state.loading = false
-            state.error = true
+            state.error = action.payload
         });
     },
 });

@@ -33,7 +33,7 @@ function Dashboard() {
       dispatch(setQuery(queryWithSearchParams));
       dispatch(fetchCandidates(queryWithSearchParams));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClick = (e: any) => {
@@ -53,7 +53,15 @@ function Dashboard() {
     <Grid gap={4} height="100vh" templateRows="minmax(10%, 50px) auto 1fr">
       <Header />
       {loading && <h2>Fetching candidates...</h2>}
-      {error && <h2>Could not get candidates</h2>}
+      {error && (
+        <h2>
+          Could not get candidates
+          <br />
+          {error}
+          <br />
+          Try reloading the page.
+        </h2>
+      )}
       {!loading && !error && (
         <>
           <Filters query={query} handleClick={handleClick} />

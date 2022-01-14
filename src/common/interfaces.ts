@@ -1,13 +1,13 @@
 import { StatusTypes, SortingTypes, QueryTypes } from '../common/types';
 export interface Candidate {
     id: number;
-    application_date: string;
-    birth_date: string;
-    email: string;
     name: string;
+    email: string;
+    birth_date: string;
     position_applied: string;
-    status: string;
+    application_date: string;
     year_of_experience: number;
+    status: string;
 }
 
 export interface Query extends QueryTypes {
@@ -22,5 +22,5 @@ export interface CandidateState {
     candidates: Candidate[],
     unfilteredCandidates: Candidate[],
     loading: boolean,
-    error: boolean,
+    error?: string,
 }
