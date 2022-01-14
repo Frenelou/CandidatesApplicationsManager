@@ -1,5 +1,5 @@
-import { StatusTypes, SortingTypes, CandidateTypes } from '../common/types';
-export interface Candidate extends CandidateTypes {
+import { StatusTypes, SortingTypes, QueryTypes } from '../common/types';
+export interface Candidate {
     id: number;
     application_date: string;
     birth_date: string;
@@ -10,16 +10,17 @@ export interface Candidate extends CandidateTypes {
     year_of_experience: number;
 }
 
-export interface Query {
+export interface Query extends QueryTypes {
     name?: string,
     status?: StatusTypes
     position_applied?: string,
-    sortBy?: SortingTypes
+    sortBy: SortingTypes,
+    asc: boolean
 }
 
 export interface CandidateState {
-    value: Candidate[],
+    candidates: Candidate[],
+    unfilteredCandidates: Candidate[],
     loading: boolean,
-    error: string,
-    query: Query
+    error: boolean,
 }

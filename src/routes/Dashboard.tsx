@@ -1,100 +1,69 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-
-import { fetchCandidates } from "../features/candidateSlice";
 import { RootState } from "../app/store";
-import { Candidate } from "../stories/Candidate/Candidate";
-import { FilterBarHead } from "../stories/FilterBarHead";
-import { MyHeader } from "../stories/MyHeader";
-import {
-  StyledCandidateHead,
-  Label,
-  StyledCandidateList,
-} from "../stories/Candidate/styles";
-import { UpDownIcon } from "@chakra-ui/icons";
-import { titleCase } from "../utils/format";
 
 import {
-  Box,
-  Grid,
-  FormControl,
-  Select,
-  Input,
-  Button,
-} from "@chakra-ui/react";
-import { filterCandidates, sortCandidates } from "../features/candidateSlice";
-import {
-  SelectAndInputEvent,
-  SortingTypes,
-  sortingtypes,
-  statustypes,
-  FiltersTypes,
-  CandidateTypes,
-  filterFields,
-} from "../common/types";
+  fetchCandidates,
+  filterCandidates,
+  sortCandidates,
+} from "../features/candidateSlice";
+import { setQuery } from "../features/querySlice";
+
+import { Grid } from "@chakra-ui/react";
+import { Header } from "../stories/Header";
+import { CandidateList } from "../stories/CandidatesList";
+import { CandidateListHead as Filters } from "../stories/Filters";
+
 function Dashboard() {
   const dispatch = useDispatch();
-  // useEffect(() => {
-  // dispatch(fetchCandidates());
-
-  // }, []);
   let [searchParams, setSearchParams] = useSearchParams();
 
-  const candidates = useSelector((state: RootState) => state.candidates.value);
-  const query = useSelector((state: RootState) => state.candidates.query);
-  console.log("query", query);
-
-  const { sortBy, ...filters } = query;
-  const { loading, error } = useSelector(
+  const query: any = useSelector((state: RootState) => state.query.query);
+  const { loading, error, candidates } = useSelector(
     (state: RootState) => state.candidates
   );
+
   useEffect(() => {
-    dispatch(filterCandidates(Object.fromEntries([...searchParams])));
-    dispatch(sortCandidates());
+    if (loading) {
+      let queryWithSearchParams = {
+        ...query,
+        ...Object.fromEntries([...searchParams].filter((f) => f[1] !== "")),
+      };
+      dispatch(setQuery(queryWithSearchParams));
+      dispatch(fetchCandidates(queryWithSearchParams));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleChange = (e: SelectAndInputEvent) => {
-    const { name, value } = e.currentTarget;
-    dispatch(filterCandidates({ [name]: value }));
-    setSearchParams({ ...query });
-  };
+  const handleClick = (e: any) => {
+    let newQuery = {
+      ...query,
+      ...e,
+      asc: e.sortBy !== query.sortBy ? true : !query.asc,
+    };
 
-  const handleClick = (sort_key: SortingTypes) => {
-    dispatch(sortCandidates(sort_key));
-    setSearchParams({ ...query, status: query.status || "" });
+    dispatch(setQuery(newQuery));
+    setSearchParams(newQuery);
+    dispatch(filterCandidates(newQuery));
+    dispatch(sortCandidates(newQuery));
   };
 
   return (
-    <Grid gap={4} height="100vh" templateRows="minmax(10%, 50px) auto auto">
-      <MyHeader />
-      <FilterBarHead />
-      <StyledCandidateList className="StyledCandidateList">
-        <div>
-          <StyledCandidateHead>
-            {filterFields.map((key, i) => {
-              const { name, isSortable } = key;
-              let value: any = "";
-
-              if (isSortable)
-                value = sortingtypes.indexOf(name as SortingTypes);
-
-              return (
-                <Label
-                  key={i}
-                  onClick={() => handleClick(value)}
-                  className={`field${isSortable && " field-sortable"}`}>
-                  {titleCase(name)}
-                  {isSortable && <UpDownIcon ml={2} />}
-                </Label>
-              );
-            })}
-          </StyledCandidateHead>
-          {candidates.map((candidate) => (
-            <Candidate candidate={candidate} key={candidate.id} />
-          ))}
-        </div>
-      </StyledCandidateList>
+    <Grid gap={4} height="100vh" templateRows="minmax(10%, 50px) auto 1fr">
+      <Header />
+      {loading && <h2>Fetching candidates...</h2>}
+      {error && <h2>Could not get candidates</h2>}
+      {!loading && !error && (
+        <>
+          <Filters query={query} handleClick={handleClick} />
+          <CandidateList
+            query={query}
+            candidates={candidates}
+            handleClick={handleClick}
+          />
+        </>
+      )}
     </Grid>
   );
 }

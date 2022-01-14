@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit"
 import candidateReducer from '../features/candidateSlice'
+import queryReducer from '../features/querySlice'
 
 export const store = configureStore({
     reducer: {
         candidates: candidateReducer,
+        query: queryReducer,
     },
 });
 

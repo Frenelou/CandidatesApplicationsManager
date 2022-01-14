@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { devices } from "../../styles/devices";
 
-export const StyledFilterBarHead = styled.div`
+export const StyledFilterBar = styled.div`
   display: flex;
   margin: auto;
   padding: 0.5rem 0;
@@ -14,6 +14,17 @@ export const StyledFilterBarHead = styled.div`
   flex-wrap: wrap;
   @media ${devices.tablet} {
     flex-wrap: nowrap;
+  }
+  .candidate-sort-button {
+    width: 100%;
+    @media ${devices.tablet} {
+      display: none;
+    }
+  }
+  .filter-field--sortBy {
+    @media ${devices.laptop} {
+      display: none;
+    }
   }
 `;
 

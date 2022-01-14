@@ -10,10 +10,9 @@ interface HeaderProps {
   pageName?: string;
 }
 
-export const MyHeader = ({ pageName }: HeaderProps) => (
+export const Header = ({ pageName }: HeaderProps) => (
   <StyledHeader>
     <Avatar  mr={4}/>
-    <Heading>Applications</Heading>
-    
+    <Heading>Applications</Heading>    
   </StyledHeader>
 );
