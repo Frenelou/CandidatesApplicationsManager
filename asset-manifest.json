@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.js": "/Frenelou/CandidatesApplicationsManager/static/js/main.4a86f937.js",
+    "static/js/377.5cc4b912.chunk.js": "/Frenelou/CandidatesApplicationsManager/static/js/377.5cc4b912.chunk.js",
+    "index.html": "/Frenelou/CandidatesApplicationsManager/index.html",
+    "main.4a86f937.js.map": "/Frenelou/CandidatesApplicationsManager/static/js/main.4a86f937.js.map",
+    "377.5cc4b912.chunk.js.map": "/Frenelou/CandidatesApplicationsManager/static/js/377.5cc4b912.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.4a86f937.js"
+  ]
+}
